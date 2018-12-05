@@ -1,0 +1,85 @@
+#define IN1 9
+#define IN2 8
+#define IN3 7
+#define IN4 6
+#define ENA 10
+#define ENB 5
+const int TrigPin = 2;
+const int EchoPin = 3;
+float distance;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+  Serial.begin(9600);
+  pinMode(TrigPin,OUTPUT);
+  pinMode(EchoPin,INPUT);
+  Serial.println("ultransonic sensor:");
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  MotorA(255);
+  MotorB(255);
+  digitalWrite(TrigPin,LOW);
+  delayMicroseconds(2);
+  digitalWrite(TrigPin,HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TrigPin,LOW);
+  distance = pulseIn(EchoPin,HIGH)/58.00;
+//  Serial.print(distance);
+//  Serial.print("cm");
+//  Serial.println();
+//  delay(1000);
+}
+void MotorA(int speed)
+{
+  if (distance>=30)
+  {
+    if(speed > 0)
+  {
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+    analogWrite(ENA, speed);
+  }
+  else if(speed < 0)
+  {
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    analogWrite(ENA, -speed);
+  }
+}
+  else if (distance<30)
+  {
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, LOW);
+    analogWrite(ENA, 0);
+  }
+}
+void MotorB(int speed)
+{
+  if (distance>=30)
+  {
+    if(speed > 0)
+  {
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+    analogWrite(ENB, speed);
+  }
+  else if(speed < 0)
+  {
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+    analogWrite(ENB, -speed);
+  }
+}
+  else if (distance<30)
+  {
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, LOW);
+    analogWrite(ENB, 0);
+  }
+}
